@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot name="yellow_round_peg_2in">
+    <link name="yellow_round_peg_2in">
+        <visual>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/yellow_round_peg_2in.obj"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/yellow_round_peg_2in.obj"/>
+            </geometry>
+        </collision>
+    </link>
+</robot>

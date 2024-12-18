@@ -1,0 +1,266 @@
+# See schema in factory_schema_config_task.py for descriptions of common parameters.
+
+defaults:
+    - FactoryBaseTactile
+    - _self_
+    # - /factory_schema_config_task
+
+name: FactoryTaskInsertionTactile
+physics_engine: ${..physics_engine}
+
+grasp_at_init: False
+collect_rotate: False
+reset_at_success: False
+reset_at_fails: False
+rand_inits: False
+
+grasp_logger:
+    total_grasp: 2000
+
+data_logger:
+    # for data collection
+    collect_data: False
+    total_trajectories: 20000
+    base_folder: "/common/users/im316/Advanced_Proj2/IsaacGymInsertion/isaacgyminsertion"
+    sub_folder: ''
+
+    # for logging (tests) during student training
+    collect_test_sim: ${...offline_training_w_env}
+
+tactile: # Pulling from task
+  tacto:
+    width: 224 # 224 # 480 | 224
+    height: 224 # 224 # 480 | 224 for the gan
+    visualize_gui: True
+
+  with_bg: True # add background reference frame
+  show_depth: False # visualize depth
+  show_detect: False #
+  diff: True
+  crop_roi: True
+
+  # before cropping
+  encoder:
+    width: 64
+    height: 64
+    num_channels: 1 # 1 (Grayscale), 3 (RGB)
+
+  sim2real: False
+  model_G: latest_net_G_B.pth # path for the generator
+
+env:
+    numEnvs: ${resolve_default:128,${...num_envs}}
+    numObservations: 15 #
+    numObsStudent: 15 #
+    numStates: 64 # 27
+    numActions: 6 # [position, ori]
+    numTargets: 6 # [position, ori]
+    action_latency_max: 15
+    # Should be the same as in EnvPPO
+    numObsHist: 1
+    numObsStudentHist: 1
+    img_history_len: 1
+    tactile_history_len: 1
+    ft_history_len: 1
+
+    smooth_force: True
+
+    openhand:
+        distal_open: 0.1
+        distal_close: 0.2
+        proximal_open: 1.0
+        proximal_close: 2.4
+        proximal_noise: 0.1
+        distal_noise: 0.2
+        base_angle: 0.7
+        tactile_finger: [ 'finger_1_3', 'finger_2_3', 'finger_3_3' ] # left, right, middle
+
+    actionsMovingAverage:
+      range: [ 0.15, 0.35 ]
+      schedule_steps: 1000000
+      schedule_freq: 500 # schedule every 500 steps for stability
+
+    actionLatencyMax: 10
+    actionLatencyScheduledSteps: 10_000_000
+
+    actionDelayProbMax: 0.2
+    plugObsDelayProb: 0.2
+    ImgDelayProb: 0.1
+    PclProbNoise: 0.7
+    SegDelayProb: 0.1
+    SegProbNoise: 0.1
+    TactileDelayProb: 0.1
+    scalePosProb: 0.3
+    scaleRotProb: 0.3
+
+    # Sim runs at 60 Hz
+    maxObjectSkipObs: 2  # i.e max 30hz
+    maxSkipImg: 2
+    maxSkipTactile: 2
+
+    num_gripper_move_sim_steps: 120  # number of timesteps to reserve for moving gripper before first step of episode
+    num_gripper_close_sim_steps: 50  # number of timesteps to reserve for closing gripper onto plug during each reset
+    num_gripper_lift_sim_steps: 25  # number of timesteps to reserve for lift after last step of episode
+
+    socket_priv_obs_noise: [ 0.000, 0.000, 0.000 ]
+    socket_pos_obs_noise:  [ 0.000, 0.000, 0.000 ] #[ 0.005, 0.005, 0.005 ]
+
+    socket_rot_obs_noise: [ 0.0, 0.0, 0.0 ]
+
+    socket_base_height: 0.003
+    plug_grasp_threshold: 0.06
+
+    tactile: False
+    tactile_display_viz: False
+    tactile_wrt_force: False
+
+    compute_contact_gt: False
+    total_points: 2048
+    num_points: 400
+    num_points_socket: 400
+    num_points_goal: 400
+    merge_goal_pcl: False
+    merge_socket_pcl: True
+    include_all_pcl: False
+    include_plug_pcl: True
+    relative_pcl: False
+
+    record_video: True
+    record_ft: True
+    record_video_every: 1000
+    record_ft_every: 1000
+
+sim:
+    disable_gravity: True
+
+external_cam:
+  external_cam: True
+  pcl_cam: True
+  seg_cam: True
+  depth_cam: True
+  display: False
+
+  cam_res:
+    w: 96
+    h: 54
+  cam_type: 'd'
+  save_im: False
+  far_clip: 0.5
+  near_clip: 0.1
+  dis_noise: 0.001 # 0.001 - adding noise in transform instead
+
+randomize:
+    force_scale: 0.0
+    pcl_rot: 30.0
+
+    kuka_arm_initial_dof_pos: [0.0064, 0.2375,  -0.0075,  -1.2022, 0.0015,  1.6900,  -1.5699]
+    fingertip_midpoint_rot_initial: [-3.14159265359, 0.0, -1.57079632679]  # initial rotation of fingertips (Euler)
+
+    same_socket: False
+    # for grasp generations
+#    plug_pos_xy_initial: [0.50, 0.0, 0.0]  # z 0.03  initial XY position of plug on table
+    grasp_plug_noise: 0.00 # xyz noise on grasp pos position during grasp at init
+    plug_pos_xy_noise: [0.0, 0.0] #[ 0.01,  0.01] # noise on plug position
+    plug_rot_noise: [ 0., 0., 0. ] # [0.3, 0.3, 0.3] rot noise on plug init
+    plug_pos_z_noise_bounds: [0.0, 0.0] #[ 0.05, 0.08 ]  # [0.05, 0.1] plug z bound noise
+#    plug_quat_noise: [0.0, 0.0, 0.0, 0.0]
+
+    socket_pos_xy_initial: [0.5, 0.0, 0.0]  # initial XY position of plug on table # round_hole_2in  width = 0.1016, length = 0.09144
+    socket_pos_xy_noise: [0.0, 0.0]  # [0.1, 0.1] noise on socket position
+    socket_pos_z_noise_bounds: [0.00, 0.0]  # noise on socket offset from table
+#    above_socket_noise: [0.03, 0.03, 0.001]
+    socket_rot_euler_noise:  [ 0.000, 0.000, 0.000 ] #[0.0, 0.0, 0.0872665]  # noise on socket position
+
+    scale_noise_pos:  [0.0, 0.0, 0.0]  #[0.002, 0.002, 0.002]
+    scale_noise_rot: [0.0,0.0,0.0] #[ 0.01, 0.01, 0.01]
+
+rl:
+
+    pos_action_scale: [0.01, 0.01, 0.01]
+    rot_action_scale: [0.05, 0.05, 0.05]
+
+    force_action_scale: [1.0, 1.0, 1.0]
+    torque_action_scale: [1.0, 1.0, 1.0]
+    
+    unidirectional_rot: True  # constrain kuka Z-rot to be unidirectional
+    unidirectional_force: False  # constrain kuka Z-force to be unidirectional (useful for debugging)
+
+    clamp_rot: True
+    clamp_rot_thresh: 1.0e-6
+
+    num_keypoints: 4  # number of keypoints used in reward
+    keypoint_scale: 1.0  # length of line of keypoints
+
+    max_episode_length: 500 # 8192  # terminate episode after this number of timesteps (failure)
+
+    orientation_threshold: 0.1
+    far_error_thresh: 0.100  # threshold above which plug is considered too far from bolt
+    close_error_thresh: 0.005  # threshold below which plug is considered close enough to bolt
+    success_height_thresh: 0.005  # threshold distance below which plug is considered successfully inserted
+
+#    keypoint_reward_scale: -0.7 # scale on keypoint-based reward
+#    action_penalty_scale: -0.07  # scale on action penalty
+#    action_delta_scale: -0.07
+#    ori_reward_scale: -0.1 # scale on ori-based reward
+
+    keypoint_reward_scale: -0.9 # scale on keypoint-based reward
+    action_penalty_scale: -0.1  # scale on action penalty
+    action_delta_scale: -0.2
+    ori_reward_scale: -0.5 # scale on ori-based reward
+    eef_ori_reward_scale: -0.0 # scale on ori-based reward
+
+    early_reset_reward_scale: -1.0
+    engagement_reward_scale: 0.4
+
+    # Success bonus
+    success_bonus: 5.0  # bonus if plug is close enough to base of bolt shank
+    # engagement_bonus: 0.01 # bonus if plug is engaged (partially inserted) with socket
+
+
+ctrl:
+    ctrl_type:  gym_default # {gym_default,
+                               #  joint_space_ik, joint_space_id, 
+                               #  task_space_impedance, operational_space_motion, 
+                               #  open_loop_force, closed_loop_force,
+                               #  hybrid_force_motion}
+    all:
+        jacobian_type: geometric
+        gripper_prop_gains: [10, 10, 10, 10, 10, 10, 10, 10]
+        gripper_deriv_gains: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+    gym_default:
+        ik_method: dls
+        joint_prop_gains: [290, 208, 145, 145, 232, 204, 176]
+        joint_deriv_gains: [81, 80, 40, 43, 75, 82, 47]
+#        joint_prop_gains: [ 800, 800, 800, 800, 300, 50, 10 ]
+#        joint_deriv_gains: [ 80, 100, 5, 80, 10, 1, 1 ]
+        gripper_prop_gains: [10, 10, 10, 10, 10, 10, 10, 10]
+        gripper_deriv_gains: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+    joint_space_ik:
+        ik_method: dls
+        joint_prop_gains: [1, 1, 1, 1, 1, 1, 1]
+        joint_deriv_gains: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+    joint_space_id:
+        ik_method: dls
+        joint_prop_gains: [ 290, 208, 145, 145, 232, 204, 176 ]
+        joint_deriv_gains: [ 81, 80, 40, 43, 75, 82, 47 ]
+#        joint_prop_gains: [1, 1, 1, 1, 1, 1, 1]
+#        joint_deriv_gains: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+    task_space_impedance:
+        motion_ctrl_axes: [1, 1, 1, 1, 1, 1]
+        task_prop_gains: [300, 300, 300, 50, 50, 50]
+        task_deriv_gains: [34, 34, 34, 1.4, 1.4, 1.4]
+    operational_space_motion:
+        motion_ctrl_axes: [1, 1, 1, 1, 1, 1]
+        task_prop_gains: [200, 200, 200, 200, 200, 200]
+        task_deriv_gains: [10, 10, 10, 10, 10, 10]
+    open_loop_force:
+        force_ctrl_axes: [1, 1, 1, 1, 1, 1]
+    closed_loop_force:
+        force_ctrl_axes: [1, 1, 1, 1, 1, 1]
+        wrench_prop_gains: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+    hybrid_force_motion:
+        motion_ctrl_axes: [1, 1, 1, 1, 1, 1]
+        task_prop_gains: [40, 40, 40, 40, 40, 40]
+        task_deriv_gains: [8, 8, 8, 8, 8, 8]
+        force_ctrl_axes: [1, 1, 1, 1, 1, 1]
+        wrench_prop_gains: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]

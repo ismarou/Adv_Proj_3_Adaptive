@@ -1,0 +1,97 @@
+seed: ${..seed}
+algo: ExtrinsicAdapt
+
+load_path: ${..checkpoint} # path to the checkpoint to load
+
+desired_subassemblies: ['yellow_round_peg_2in']
+#                            'round_peg_hole_8mm_loose', round_peg_hole_16mm_loose
+#                            'round_peg_hole_12mm_loose',
+#                            'round_peg_hole_4mm_loose',yellow_round_peg_2in, red_round_peg_15in
+#                            'rectangular_peg_hole_4mm_loose',
+#                            'rectangular_peg_hole_8mm_loose',
+#                            'rectangular_peg_hole_12mm_loose',
+#                            'rectangular_peg_hole_16mm_loose']w
+
+record_video: True
+record_ft: True
+tactile_display_viz: True
+
+data_logger:
+    # for data collection
+    collect_data: True
+    total_trajectories: 5
+    base_folder: "/home/roblab20/for_paper"
+    sub_folder: "datastore_real"
+
+# taking from training default, allows to over write
+# actually, we should write different config for each observation we test
+rl:
+    max_episode_length: 500
+#    pos_action_scale: [0.009, 0.009, 0.004]
+#    rot_action_scale: [0.01, 0.01, 0.01]
+    pos_action_scale: [ 0.01, 0.01, 0.005 ]
+    rot_action_scale: [ 0.02, 0.02, 0.1]
+    clamp_rot: ${...task.rl.clamp_rot}
+    clamp_rot_thresh: ${...task.rl.clamp_rot_thresh}
+
+env:
+  # can be async to model inputs.
+  hand: True
+  arm: True
+  depth_cam: True
+  seg: False
+  ext_cam: False
+  tactile: True
+  pcl: True # if true, seg and depth will also be recorded
+
+  tactile_seq_length: ${...task.env.tactile_history_len}
+  ft_seq_length: ${...task.env.ft_history_len}
+  obs_seq_length: ${...task.env.numObsHist}
+  stud_obs_seq_length: ${...task.env.numObsStudentHist}
+
+  priv_info_dim: ${...task.env.numStates}
+  numObservations: ${...task.env.numObservations}
+  numObsStudent: ${...task.env.numObsStudent}
+  numActions: ${...task.env.numActions}
+  numTargets: ${...task.env.numTargets}
+  socket_pos_obs_noise: [ 0.00, 0.00, 0.0 ]
+  socket_rot_obs_noise: [ 0.0, 0.0, 0.0 ]
+  fingertip_midpoint_rot_initial: [ -3.14159265359, 0.0, -1.57079632679 ]
+
+  kuka_depth: ${...task.env.kuka_depth}
+  table_height: ${...task.env.table_height}
+
+  compute_contact_gt: ${...task.env.compute_contact_gt}
+  only_contact: ${...task.env.only_contact}
+  num_points: ${...task.env.num_points}
+
+ppo:
+  priv_info: True
+
+  # Inputs to the model
+  extrin_adapt: False
+  tactile_info: True
+  pcl_info: True
+  obs_info: True
+  seg_info: False
+  img_info: False
+  ft_info: False
+
+  tactile_seq_length: ${...task.env.tactile_history_len}
+  ft_seq_length: ${...task.env.ft_history_len}
+  obs_seq_length: ${...task.env.numObsHist}
+  stud_obs_seq_length: ${...task.env.numObsStudentHist}
+  priv_info_dim: ${...task.env.numStates}
+  student_obs_input_shape: ${...task.env.numObsStudent}
+  ft_input_dim: 6
+
+
+common_poses:
+#  socket_pos: [0.4978153018206522, 0.0012649703391055273, 0.001] # [0.5005785990398001, -0.0012649703391055273, 0.0 0050583096104704385
+#  socket_pos: [0.5028532612790371, 0.001704983755619459, 0.001]
+  socket_pos: [0.52858, 0.001704983755619459, 0.001]
+
+  joints_above_socket: [-0.01306919673345508, 0.46035625642851, -3.115810324760627, -1.5234410615555438, -0.012022574425053278, -1.1572361716453639, 1.5847205313963213, 0.0]
+#  joints_above_socket: [-0.015, 0.264, -3.116, -1.611, -0.008, -1.266, 1.583]
+  joints_above_plug: [-0.4343525190442179, 0.3393440474185589, -3.118461501625801, -1.762369221913092, -0.010365555594806786, -1.0404064904168955, 1.172501677329807]
+

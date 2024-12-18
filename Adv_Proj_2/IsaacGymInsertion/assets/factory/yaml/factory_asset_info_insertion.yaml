@@ -1,0 +1,184 @@
+round_peg_hole_16mm_loose:
+    round_peg_16mm_loose:
+        urdf_path: 'factory_round_peg_16mm_loose'
+        diameter: 0.015983
+        length: 0.0762 # 0.050
+        density: 8000.0
+        friction: 0.5
+        scale: 1.2
+    round_hole_16mm:
+        urdf_path: 'factory_round_hole_16mm'
+        diameter: 0.0165
+        height: 0.0089916
+        density: 8000.0
+        friction: 0.5
+
+rectangular_peg_hole_32mm_loose:
+    rectangular_peg_32mm_loose:
+        urdf_path: 'factory_rectangular_peg_32mm_loose'
+        width: 0.031914
+        depth: 0.01982
+        length: 0.0762
+        density: 8000.0
+        friction: 0.5
+        scale: 1.2
+    rectangular_hole_32mm:
+        urdf_path: 'factory_rectangular_hole_32mm'
+        width: 0.0324364
+        depth: 0.0203152
+        height: 0.0089916
+        density: 8000.0
+        friction: 0.5
+
+square_peg_hole_32mm_loose:
+    square_peg_32mm_loose:
+        urdf_path: 'factory_square_peg_32mm_loose'
+        width: 0.031914
+        depth: 0.02973
+        length: 0.0762
+        density: 8000.0
+        friction: 0.5
+        scale: 1.085
+    square_hole_32mm:
+        urdf_path: 'factory_square_hole_32mm'
+        width: 0.0324364
+        depth: 0.0304728
+        height: 0.0089916
+        density: 8000.0
+        friction: 0.5
+
+rectangular_peg_hole_16mm_loose:
+    rectangular_peg_16mm_loose:
+        urdf_path: 'factory_rectangular_peg_16mm_loose'
+        width: 0.015957
+        depth: 0.009910
+        length: 0.0762
+        density: 8000.0
+        friction: 0.5
+        scale: 1.2
+    rectangular_hole_16mm:
+        urdf_path: 'factory_rectangular_hole_16mm'
+        width: 0.0162182
+        depth: 0.0101576
+        height: 0.0089916
+        density: 8000.0
+        friction: 0.5
+
+yellow_round_peg_2in:
+    round_peg_2in:
+        urdf_path: 'yellow_round_peg_2in'
+        diameter: 0.0508
+        length: 0.0762
+        density: 500.0
+        friction: 0.5
+        scale: 1.04
+    round_hole_2in:
+        urdf_path: 'green_round_hole_2in'
+        diameter: 0.05105
+        height: 0.01 # 0.01 #
+        density: 8000.0
+        friction: 0.5
+        # width: 0.1016
+        # length: 0.09144
+
+red_round_peg_1_5in:
+    round_peg_1_5in:
+        urdf_path: 'red_round_peg_1_5in'
+        diameter: 0.0381
+        length: 0.0762
+        density: 2000.0
+        friction: 0.5
+        scale: 1.1
+    round_hole_1_5in:
+        urdf_path: 'green_round_hole_1_5in'
+        diameter: 0.0391
+        height: 0.01
+        density: 8000.0
+        friction: 0.5
+        # width: 0.1016
+        # length: 0.09144
+
+triangle:
+    triangle_peg:
+        urdf_path: 'triangle_peg'
+        width: 0.06391
+        depth: 0.05535
+        length: 0.0762
+        density: 500.0
+        friction: 0.5
+        scale: 1.1
+    red_triangle_hole:
+        urdf_path: 'red_triangle_hole'
+        width: 0.06599
+        depth: 0.05715
+        height: 0.01
+        density: 8000.0
+        friction: 0.5
+
+small_triangle:
+    triangle_peg:
+        urdf_path: 'small_triangle_peg'
+        width: 0.04793
+        depth: 0.04151
+        length: 0.0762
+        density: 2000.0
+        friction: 0.5
+        scale: 1.17
+    red_triangle_hole:
+        urdf_path: 'small_red_triangle_hole'
+        width: 0.04949
+        depth: 0.04286
+        height: 0.01 
+        density: 8000.0
+        friction: 0.5
+
+ellipse:
+    ellipse_peg:
+        urdf_path: 'ellipse_peg'
+        width: 0.035
+        depth: 0.05
+        length: 0.0762
+        density: 2000.0
+        friction: 0.5
+        scale: 1.1
+    ellipse_hole:
+        urdf_path: 'ellipse_hole'
+        width: 0.03511
+        depth: 0.0511
+        height: 0.01
+        density: 8000.0
+        friction: 0.5
+
+hexagon:
+    hexagon_peg:
+        urdf_path: 'hexagon_peg'
+        width: 0.03464
+        depth: 0.04
+        length: 0.0762
+        density: 2000.0
+        friction: 0.5
+        scale: 1.1
+    hexagon_hole:
+        urdf_path: 'hexagon_hole'
+        width: 0.03574
+        depth: 0.0411
+        height: 0.01
+        density: 8000.0
+        friction: 0.5
+
+trapez:
+    trapez_peg:
+        urdf_path: 'trapez_peg'
+        width: 0.03
+        depth: 0.06
+        length: 0.0762
+        density: 2000.0
+        friction: 0.5
+        scale: 1.1
+    trapez_hole:
+        urdf_path: 'trapez_hole'
+        width: 0.0311
+        depth: 0.0611
+        height: 0.01
+        density: 8000.0
+        friction: 0.5

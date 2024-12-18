@@ -1,0 +1,158 @@
+# See schema in factory_schema_config_env.py for descriptions of common parameters.
+
+defaults:
+    - FactoryBaseTactile
+    - _self_
+    - /factory_schema_config_env
+
+sim:
+    disable_kuka_collisions: False
+    disable_socket_collisions: False
+    disable_plug_collisions: False
+
+# Translation
+#  x: 0.878866671023
+#  y: -0.0135121315558
+#  z: 0.21377820942
+#rotation:
+#  x: -0.537003511513
+#  y: -0.571492980771
+#  z: 0.446935960448
+#  w: 0.430431468194
+#[13:00, 11.9.2024] Osher:
+
+external_cam:
+    x_init: 0.87
+    y_init: -0.0135121315558
+    z_init: 0.21377820942
+    x_point_init: 0.349
+    y_point_init: 0
+    z_point_init: 0
+
+    use_point: False
+    use_real: True
+
+    cam_pos_noise: 0.00
+    cam_point_noise: 0.01
+    cam_ori_error: 0.0
+
+    real_cam_pos: [0.73114316, -0.01966786, 0.1629284]
+    real_cam_ori: [0.60720, 0.6214361, -0.3433028,-0.3567319]
+
+
+env:
+    env_name: 'FactoryEnvInsertionTactile'
+    aggregate_mode: True
+
+    desired_subassemblies: [
+                            'hexagon',
+                            'ellipse',
+                            'trapez',
+                            #'small_triangle',
+                            #'red_round_peg_1_5in',
+                            #'yellow_round_peg_2in',
+                            #'square_peg_hole_32mm_loose',
+    ]
+#                             'round_peg_hole_16mm_loose',
+#                             'rectangular_peg_hole_16mm_loose',
+#                            'rectangular_peg_hole_32mm_loose',
+#                            'triangle',
+
+    plug_lateral_offset: 0.1  # Y-axis offset of plug before initial reset to prevent initial interpenetration with socket
+    plug_friction: 0.99
+
+# Domain randomization params
+randomize:
+
+    domain_randomize: True
+    randomization_params:
+        # making frequency max_episode_length - 1, for randomization on every episode.
+        frequency: 499   # Define how many simulation steps between generating new randomization
+        observations:
+            range: [ 0, .002 ] # range for the white noise
+            range_correlated: [ 0, .000 ] # range for correlated noise, refreshed with freq `frequency`
+            operation: "additive"
+            distribution: "gaussian"
+            # schedule: "linear"   # "constant" is to turn on noise after `schedule_steps` num steps
+            # schedule_steps: 40000
+        actions:
+            range: [ 0., .02 ]
+            range_correlated: [ 0, .01 ] # range for correlated noise, refreshed with freq `frequency`
+            operation: "additive"
+            distribution: "gaussian"
+            # schedule: "linear"  # "linear" will linearly interpolate between no rand and max rand
+            # schedule_steps: 40000
+        sim_params:
+            gravity:
+                range: [ 0, 0.4 ]
+                operation: "additive"
+                distribution: "gaussian"
+                # schedule: "linear"  # "linear" will linearly interpolate between no rand and max rand
+                # schedule_steps: 40000
+        actor_params:
+            kuka:
+                color: True
+                dof_properties:
+                    lower:
+                        range: [ 0, 0.01 ]
+                        operation: "additive"
+                        distribution: "gaussian"
+                        # schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+                        # schedule_steps: 30000
+                    upper:
+                        range: [ 0, 0.01 ]
+                        operation: "additive"
+                        distribution: "gaussian"
+                        # schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+                        # schedule_steps: 30000
+                rigid_shape_properties:
+                    friction:
+                        num_buckets: 250
+                        range: [1.0, 1.0] # 1 1
+                        operation: "scaling"
+                        distribution: "uniform"
+            plug:
+#                scale:
+#                    range: [ 0.9, 1.0 ]
+#                    operation: "scaling"
+#                    distribution: "uniform"
+#                    setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+                    # schedule: "linear"  # "linear" will scale the current random sample by ``min(current num steps, schedule_steps) / schedule_steps`
+                    # schedule_steps: 30000
+                rigid_shape_properties:
+                    friction:
+                        num_buckets: 250
+                        range: [ 0.9, 1.3 ]
+                        operation: "scaling"
+                        distribution: "uniform"
+
+                        # schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+                        # schedule_steps: 30000
+                rigid_body_properties:
+                    mass:
+                        range: [ 0.5, 1.1 ]
+                        operation: "scaling"
+                        distribution: "uniform"
+                        setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+                        # schedule: "linear"  # "linear" will scale the current random sample by ``min(current num steps, schedule_steps) / schedule_steps`
+                        # schedule_steps: 30000
+            table:
+                rigid_shape_properties:
+                    friction:
+                        num_buckets: 250
+                        range: [ 0.0, 0.0 ]
+                        operation: "scaling"
+                        distribution: "uniform"
+
+            socket:
+                rigid_shape_properties:
+                    friction:
+                        num_buckets: 250
+                        range: [ 0.3, 0.9]
+                        operation: "scaling"
+                        distribution: "uniform"
+                scale:
+                    range: [ 1.0, 1.1 ]
+                    operation: "scaling"
+                    distribution: "uniform"
+                    setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.

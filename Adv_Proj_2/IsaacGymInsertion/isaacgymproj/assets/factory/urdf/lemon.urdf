@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="lemon">
+    <link name="lemon">
+        <visual>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/lemon/textured.obj"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/lemon/textured.obj"/>
+            </geometry>
+             <!-- sdf resolution="256"-->
+        </collision>
+    </link>
+</robot>

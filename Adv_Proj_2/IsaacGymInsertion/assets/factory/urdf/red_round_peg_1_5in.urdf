@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot name="red_round_peg_15in">
+    <link name="red_round_peg_15in">
+        <visual>
+         <!--origin xyz="0 0 0.0254" rpy="1.57079632679 0 1.57079632679"-->
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/red_round_peg_1_5in.obj"/>
+            </geometry>
+        </visual>
+        <collision>
+         <!--origin xyz="0 0 0.0254" rpy="1.57079632679 0 1.57079632679"-->
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/red_round_peg_1_5in.obj"/>
+            </geometry>
+        </collision>
+    </link>
+</robot>

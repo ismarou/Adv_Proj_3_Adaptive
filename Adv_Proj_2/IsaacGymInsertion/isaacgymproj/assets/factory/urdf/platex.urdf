@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="platex">
+    <link name="platex">
+        <visual>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/platex.obj" scale="1 0.5 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/platex.obj" scale="1 0.5 1"/>
+            </geometry>
+             <!-- sdf resolution="256"-->
+        </collision>
+    </link>
+</robot>

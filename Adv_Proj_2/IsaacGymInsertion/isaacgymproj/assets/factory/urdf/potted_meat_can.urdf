@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="potted_meat_can">
+    <link name="potted_meat_can">
+        <visual>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/potted_meat_can/textured.obj"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="../mesh/factory_insertion/potted_meat_can/textured.obj"/>
+            </geometry>
+             <!-- sdf resolution="256"-->
+        </collision>
+    </link>
+</robot>
